@@ -34,7 +34,7 @@ function* initAppUpdater() {
   const updateAvailableChannel = serviceAddObserverChannel(services.autoUpdater, 'onUpdateAvailable', 'au-update-available');
   const errorChannel = serviceAddObserverChannel(services.autoUpdater, 'onError', 'aus-error');
 
-  const fileExists = yield call(consumeLockFileIfExists, FILE.SHOW_RELEASE_NOTES);
+  const fileExists: boolean = yield call(consumeLockFileIfExists, FILE.SHOW_RELEASE_NOTES);
 
   if (fileExists) {
     yield put(toggleReleaseNotesSubdockVisibility());
@@ -68,8 +68,8 @@ function* initAppUpdater() {
 }
 
 function* checkForUpdates() {
-  const downloading = yield select(isDownloadingUpdate);
-  const updateAvailable = yield select(isUpdateAvailable);
+  const downloading: boolean = yield select(isDownloadingUpdate);
+  const updateAvailable: boolean = yield select(isUpdateAvailable);
 
   if (downloading || updateAvailable) {
     log.info('[updater] Skipping check');
