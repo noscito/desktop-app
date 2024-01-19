@@ -51,7 +51,7 @@ win:
        arch:
          - x64
          - ia32
-      certificateFile: undefined
+       certificateFile: undefined
   artifactName: ${productName}-Setup.${ext}
   verifyUpdateCodeSignature: false
 
