@@ -1,5 +1,5 @@
 import * as BluebirdPromise from 'bluebird';
-import { app, ipcMain, session } from 'electron';
+import { app, ipcMain, session, HandlerDetails } from 'electron';
 import log from 'electron-log';
 import { omit } from 'ramda';
 import { fromEvent, Observable, Subject } from 'rxjs';
@@ -32,6 +32,7 @@ import {
   UrlDispatcherProviderService,
   WebContentsOverrideProviderService,
 } from './interface';
+import { DEFAULT_BROWSER, DEFAULT_BROWSER_BACKGROUND, NEW_WINDOW } from '../../../urlrouter/constants';
 
 export class TabWebContentsServiceImpl extends TabWebContentsService implements RPC.Interface<TabWebContentsService> {
   protected webviews: Subject<Electron.WebContents>;
@@ -148,11 +149,12 @@ export class TabWebContentsServiceImpl extends TabWebContentsService implements 
       this.askAutoLogin.subscribe(async (webContentsId: number) => {
         const wc = await getWebContentsFromIdOrThrow(webContentsId);
 
-        const { account, canAutoSubmit } = await provider.getCredentials(wc.id);
-        if (account) {
-          wc.focus();
-          wc.send('autologin-value-retrieved', account, canAutoSubmit);
-        }
+        // vk: 18.01.2024 FIXME: TypeError: Cannot destructure property 'account' of '(intermediate value)' as it is null.
+        // const { account, canAutoSubmit } = await provider.getCredentials(wc.id);
+        // if (account) {
+        //   wc.focus();
+        //   wc.send('autologin-value-retrieved', account, canAutoSubmit);
+        // }
       }),
       shared.subscribe(wc => {
         return fromEvent(wc, 'ipc-message', (_e, channel) => channel)
@@ -210,37 +212,106 @@ export class TabWebContentsServiceImpl extends TabWebContentsService implements 
     }));
   }
 
+  /**
+   * @param details 
+   * @returns true if a site wants to open a new window for user request (e.g. authorisation window) 
+   */
+  isNewWindowForUserRequest(details: HandlerDetails): boolean {
+
+    if (details.url.startsWith('about:blank')
+        || details.url.startsWith('https://accounts.google.com/o/oauth2/')) {
+      return true;
+    }
+
+    if (details.features) {
+      let noLocation = false;
+      let noToolbar = false;
+      let noMenubar = false;
+      let popup = false;
+      const trueValues = ['yes', 'true', '1'];
+      const falseValues = ['no', 'false', '0'];
+      for (const featureString of details.features.split(',')) {
+        const pair = featureString.split('=');
+        if (pair.length === 2) {
+          const key = pair[0].trim().toLowerCase();
+          const value = pair[1].trim().toLowerCase();
+          if (key === 'location') {
+            noLocation = falseValues.includes(value);
+          }
+          else if (key === 'toolbar') {
+            noToolbar = falseValues.includes(value);
+          }
+          else if (key === 'menubar') {
+            noMenubar = falseValues.includes(value);
+          }
+          else if (key === 'popup') {
+            popup = trueValues.includes(value);
+          }
+        }
+      }
+      if (popup 
+          || noLocation && noToolbar && noMenubar) {
+        return true;
+      }
+    }
+
+    if (details.frameName) {
+      if (!['_self', '_blank', '_parent', '_top'].includes(details.frameName)) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
   async setUrlDispatcherProvider(provider: RPC.Node<UrlDispatcherProviderService>) {
     return new ServiceSubscription(this.onNewWebviews().subscribe(wc => {
-      return fromEvent(wc, 'new-window', (event, url, _, disposition, options) => ({ event, url, disposition, options }))
-        .subscribe(async ({ event, url, disposition, options }) => {
-          if (disposition === 'new-window') {
-            if (options) {
-              options.fullscreen = false;
-            }
-          } else if (disposition === 'foreground-tab' && String(url).startsWith('about:blank')) {
-            // Gmail PDF hack. Will download a printed PDF from thumbnail
-            // EDIT: not only Gmail or just PDF but most of the URL link on a Google app with overriden User Agent
-            // also falls here
-            event.preventDefault();
-            const guest = await handleHackGoogleAppsURLs(event, options);
 
-            if (guest) { // not a download
-              const newWindowUrl = guest.webContents.getURL();
-              if (newWindowUrl.startsWith('about:blank')) {
-                // if popup is still blank after 2 seconds, we show it to let it finish
-                guest.show();
-              } else {
-                guest.close();
-                // otherwise dispatch the current URL of the guest window into our URLRouter
-                await provider.dispatchUrl(newWindowUrl, wc.id);
-              }
-            }
-          } else {
-            event.preventDefault();
-            await provider.dispatchUrl(url, wc.id);
+      wc.setWindowOpenHandler((details: HandlerDetails) => {
+
+        log.debug('WindowOpen', details, process.type);
+
+        if (details.disposition === 'new-window') {
+          if (this.isNewWindowForUserRequest(details)) {
+            return { action: 'allow' };
           }
-        });
+          provider.dispatchUrl(details.url, wc.id, DEFAULT_BROWSER_BACKGROUND);
+          return { action: 'deny' };
+        }
+        else if (details.disposition === 'background-tab') {
+          provider.dispatchUrl(details.url, wc.id, DEFAULT_BROWSER);
+          return { action: 'deny' };
+        }
+
+        //vk: 2023.09.29 don't know how to verify this hack
+        //    will fix it later
+
+        // else if (disposition === 'foreground-tab' && String(url).startsWith('about:blank')) {
+        //   // Gmail PDF hack. Will download a printed PDF from thumbnail
+        //   // EDIT: not only Gmail or just PDF but most of the URL link on a Google app with overriden User Agent
+        //   // also falls here
+        //   const guest = await handleHackGoogleAppsURLs(event, options);
+
+        //   if (guest) { // not a download
+        //     const newWindowUrl = guest.webContents.getURL();
+        //     if (newWindowUrl.startsWith('about:blank')) {
+        //       // if popup is still blank after 2 seconds, we show it to let it finish
+        //       guest.show();
+        //     } else {
+        //       guest.close();
+        //       // otherwise dispatch the current URL of the guest window into our URLRouter
+        //       await provider.dispatchUrl(newWindowUrl, wc.id);
+        //     }
+        //   }
+        // }
+
+        return { 
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            fullscreen: false,
+          }
+        };
+      });
     }));
   }
 

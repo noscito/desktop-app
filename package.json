@@ -2,7 +2,7 @@
   "name": "station-desktop-app",
   "private": true,
   "productName": "Station",
-  "version": "2.4.0-RC2",
+  "version": "2.1.1-b1",
   "description": "Station",
   "homepage": "https://getstation.com",
   "author": {
@@ -16,10 +16,10 @@
   "scripts": {
     "postinstall": "cd appstore && yarn",
     "sass": "sass app/theme/scss/app.global.scss app/theme/css/app.global.css",
-    "build-webpack:webui:dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development webpack --config webpack.config.webui.js --colors --progress --mode=development",
-    "build-webpack:webui:prod": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production webpack --config webpack.config.webui.js --colors --mode=production --no-progress",
+    "build-webpack:webui:dev": "cross-env NODE_ENV=development webpack --config webpack.config.webui.js --colors --progress --mode=development",
+    "build-webpack:webui:prod": "cross-env NODE_ENV=production webpack --config webpack.config.webui.js --colors --mode=production --no-progress",
     "build-webpack:dev": "yarn run gql-gen && yarn run sass && yarn run build-webpack:appstore:prod && yarn run build-webpack:webui:dev && electron-webpack dev",
-    "build-webpack:prod": "yarn run gql-gen && yarn run sass && rimraf dist && cross-env NODE_OPTIONS=--openssl-legacy-provider electron-webpack --no-progress && yarn run build-webpack:appstore:prod && yarn run build-webpack:webui:prod",
+    "build-webpack:prod": "yarn run gql-gen && yarn run sass && rimraf dist && cross-env electron-webpack --no-progress && yarn run build-webpack:appstore:prod && yarn run build-webpack:webui:prod",
     "build-webpack:appstore:prod": "cd appstore && yarn && yarn run build",
     "start": "yarn run build-webpack:dev",
     "dev": "yarn run build-webpack:dev",
@@ -156,11 +156,10 @@
     "concurrently": "^4.1.1",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.1",
-    "electron": "^24",
-    "electron-builder": "^24.6.3",
+    "electron": "22.3.27",
+    "electron-builder": "^24.9.1",
     "electron-mocha": "^8.1.0",
     "electron-webpack": "^2.8.2",
-    "electron-winstaller": "^2.6.4",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-formatter-pretty": "^1.3.0",
@@ -229,7 +228,7 @@
     "@getstation/slack": "^13.0.0",
     "@getstation/theme": "0.21.0",
     "@mapbox/node-pre-gyp": "1.0.10",
-    "@stack-inc/electron-notification-state": "^0.1.3",
+    "@stack-inc/macos-notification-state": "https://github.com/stack-inc/macos-notification-state/archive/refs/tags/v2.0.1.tar.gz",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.6.0-beta.8",
     "apollo-link": "1.2.14",
@@ -255,8 +254,7 @@
     "electron-log": "^2.2.14",
     "electron-process-manager": "^1.0.0",
     "electron-process-reporter": "1.4.0",
-    "electron-squirrel-startup": "^1.0.0",
-    "electron-updater": "^4.3.9",
+    "electron-updater": "^6.1.7",
     "electron-window-state": "5.0.3",
     "emoji-js": "^3.4.1",
     "end-of-stream": "^1.4.1",
@@ -345,7 +343,7 @@
     "redux-ui": "^0.1.1",
     "reflect-metadata": "^0.1.13",
     "reselect": "^3.0.1",
-    "rxjs": "^7.8.1",
+    "rxjs": "^6.6.7",
     "sanitize-filename": "^1.6.3",
     "scheduler": "^0.13.6",
     "scroll-into-view-if-needed": "^2.2.20",
@@ -373,6 +371,7 @@
     "use-timeout": "^1.1.0",
     "utility-types": "^3.7.0",
     "uuid": "^3.3.2",
+    "windows-focus-assist": "^1.3.0",
     "ws": "^5.2.2"
   },
   "devEngines": {
@@ -407,7 +406,7 @@
     }
   },
   "volta": {
-    "node": "18.14.0",
+    "node": "16",
     "yarn": "1.19.1"
   },
   "electronWebpack": {

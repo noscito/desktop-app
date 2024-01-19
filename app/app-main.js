@@ -1,13 +1,12 @@
 import { EventEmitter } from 'events';
 import { parse } from 'url';
-import { app, webContents } from 'electron';
+import { app, session, webContents } from 'electron';
 import log from 'electron-log';
 import services from './services/servicesManager';
 import { observer } from './services/lib/helpers';
 import { handleError } from './services/api/helpers';
 import { start } from './webui/webUIHandler';
-
-require('./session');
+import { enhanceSession } from './session';
 
 export default class BrowserXAppMain extends EventEmitter {
   init() {
@@ -23,6 +22,9 @@ export default class BrowserXAppMain extends EventEmitter {
         await this.onOpen();
       }
     });
+    app.on('session-created', (session) => {
+      enhanceSession(session);
+    })
   }
 
   // eslint-disable-next-line class-methods-use-this

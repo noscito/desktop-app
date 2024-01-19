@@ -16,7 +16,6 @@ import * as isBlank from 'is-blank';
 // @ts-ignore
 import * as throttle from 'lodash.throttle';
 import * as path from 'path';
-import { propEq } from 'ramda';
 import { noop, compact } from 'ramda-adjunct';
 import * as React from 'react';
 import { compose } from 'react-apollo';
@@ -24,7 +23,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // @ts-ignore no declaration file
 import { updateUI } from 'redux-ui/transpiled/action-reducer';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { oc } from 'ts-optchain';
 import { format as formatUrl } from 'url';
@@ -103,6 +102,7 @@ export interface OwnProps {
   applicationIcon: Maybe<string>,
   themeColor: Maybe<string>,
   notUseNativeWindowOpen: Maybe<boolean>,
+  useDefaultSession: Maybe<boolean>,
 
   appFocus: Maybe<number>,
   isOnline: Maybe<boolean>,
@@ -225,8 +225,11 @@ class ApplicationImpl extends React.PureComponent {
 
     const tabId = getTabId(this.props.tab);
     const executeWebviewMethodForTab: Observable<ExecuteWebviewMethodAction> = actionsBus
-      .pipe(filter(propEq('type', EXECUTE_WEBVIEW_METHOD)))
-      .pipe(filter(propEq('tabId', tabId)));
+      .pipe(
+        filter(action => action.type === EXECUTE_WEBVIEW_METHOD),
+        map(action => action as ExecuteWebviewMethodAction),
+        filter(action => action.tabId === tabId)
+      );
 
     this.busSubscription = executeWebviewMethodForTab.subscribe(action => {
       this.handleExecuteWebviewMethod(action);
@@ -394,7 +397,8 @@ class ApplicationImpl extends React.PureComponent {
   }
 
   render() {
-    const { notUseNativeWindowOpen, tab } = this.props;
+    const tab = this.props.tab;
+    const useNativeWindowOpen = !this.props.notUseNativeWindowOpen;
     const tabUrl = tab.get('url', '');
     const nodeIntegrationEnabled = tabUrl.startsWith('station://')
 
@@ -404,6 +408,7 @@ class ApplicationImpl extends React.PureComponent {
       crashed, errorCode, errorDescription,
       canGoBack, themeGradient, email,
       promptBasicAuth, performBasicAuth, basicAuthInfo,
+      useDefaultSession,
     } = this.props;
 
     return (
@@ -451,6 +456,7 @@ class ApplicationImpl extends React.PureComponent {
           allowpopups={true}
           loading={this.props.loading}
           webviewRef={this.setWebviewRef}
+          partition={useDefaultSession ? '' : `persist:${applicationId}`}
           onPageTitleUpdated={this.handleTitleUpdated}
           onPageFaviconUpdated={this.handleFaviconUpdated}
           onDidStartLoading={this.handleDidStartLoading}
@@ -458,7 +464,7 @@ class ApplicationImpl extends React.PureComponent {
           onDidFailLoad={this.handleDidFailLoad}
           onDomReady={this.handleDomReady}
           onCrashed={this.handleWebcontentsCrashed}
-          webpreferences={`allowRunningInsecureContent=true,nativeWindowOpen=${!(!!notUseNativeWindowOpen)},contextIsolation=false,nodeIntegration=${nodeIntegrationEnabled}`}
+          webpreferences={`allowRunningInsecureContent=true,nativeWindowOpen=${useNativeWindowOpen},contextIsolation=false,nodeIntegration=${nodeIntegrationEnabled}`}
         />
 
       </div>
@@ -486,6 +492,7 @@ const Application = compose(
         applicationIcon: manifestData.interpretedIconURL(),
         themeColor: manifestData.theme_color(),
         notUseNativeWindowOpen: manifestData.bx_not_use_native_window_open_on_host(),
+        useDefaultSession: manifestData.bx_use_default_session(),
 
         isOnline: stationStatus.isOnline(),
         appFocus: stationStatus.focus(),

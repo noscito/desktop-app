@@ -1,7 +1,7 @@
 {
   "name": "Outlook",
   "category": "Communication & Collaboration",
-  "start_url": "https://outlook.live.com",
+  "start_url": "https://outlook.office.com/mail/",
   "icons": [
     {
       "src": "https://cdn.filestackcontent.com/XdVhfkeSZyYeRGAc3yc3",
@@ -10,7 +10,6 @@
   ],
   "theme_color": "#0070C9",
   "scope": "https://outlook.live.com",
-  "bx_use_native_window_open_on_host": true,
   "bx_legacy_service_id": "outlook",
   "recommendedPosition": "12"
 }
