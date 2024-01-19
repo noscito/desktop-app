@@ -28,4 +28,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile && yarn run rebuild-all-native
       - name: Build and Release
-        run: yarn run release
+        run: |
+          set WIN_CSC_LINK=
+          yarn run release
