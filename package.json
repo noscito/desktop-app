@@ -28,7 +28,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "rimraf": "^3.0.0"
+    "rimraf": "^5.0.10"
   },
   "devEngines": {
     "node": ">=18.0.0",
