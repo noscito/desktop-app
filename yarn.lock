@@ -13849,24 +13849,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-process-manager@https://github.com/viktor44/electron-process-manager/releases/download/v1.1.0/release.tar.gz":
-  version: 1.1.0
-  resolution: "electron-process-manager@https://github.com/viktor44/electron-process-manager/releases/download/v1.1.0/release.tar.gz"
+"electron-process-manager@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "electron-process-manager@npm:1.0.0"
   dependencies:
-    electron-process-reporter: "https://github.com/viktor44/electron-process-reporter/releases/download/v1.5.0/release.tar.gz"
-  checksum: 10c0/7bff2d2e3b19fe73599c7bd514709b460939b5e8c1819b3cbe8541422d9cfc197779f539f504e8f3718545dad092f1de9bc4b1371bd9b254fc76a6f4ede853f5
+    electron-process-reporter: "npm:^1.4.0"
+  peerDependencies:
+    electron: ^7.0.0
+  checksum: 10c0/84abc5d13408be586db4d3ce5499a73d4114f0c029b4d1da08b93537777f23f3c2a955e254fe5b7a4078cf4f9e7b7bd803af2241a7b85a3c9731f3b09a8bc677
   languageName: node
   linkType: hard
 
-"electron-process-reporter@https://github.com/viktor44/electron-process-reporter/releases/download/v1.5.0/release.tar.gz":
-  version: 1.5.0
-  resolution: "electron-process-reporter@https://github.com/viktor44/electron-process-reporter/releases/download/v1.5.0/release.tar.gz"
+"electron-process-reporter@npm:1.4.0, electron-process-reporter@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "electron-process-reporter@npm:1.4.0"
   dependencies:
-    memoizee: "npm:^0.4.17"
-    pidtree: "npm:^0.6.0"
-    pidusage: "npm:3.0.2"
-    rxjs: "npm:^6.6.7"
-  checksum: 10c0/5bdabfd46f3026af71df4128f13d2d395788931afa7dab23370252c6b3f4d417f3b561db72f136db606096bb531076a22e237019ec94486301d3668b015fcd25
+    memoizee: "npm:^0.4.14"
+    pidtree: "npm:^0.3.0"
+    pidusage: "npm:2.0.16"
+    rxjs: "npm:^5.5.6"
+  checksum: 10c0/54e70e3e67256c2cac1d4a22a0faa1883023ec30b394cdb2169ec89e54d2275151196f0a5da0d0430c8277e1f60c8c151e481eb902c40fbb6a0a708a4b570b56
   languageName: node
   linkType: hard
 
@@ -14000,16 +14002,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:25.9.8":
-  version: 25.9.8
-  resolution: "electron@npm:25.9.8"
+"electron@npm:27.3.11":
+  version: 27.3.11
+  resolution: "electron@npm:27.3.11"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^18.11.18"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/420204d5949baa1e88dad33b39ea0be526882f6f101279f113cc8b5140f6784f50ab61e951fb1af22bde1fe9c6c75141d585f1e9acd6a8bb8e85d488686d947f
+  checksum: 10c0/9643a284beca7e9855da5d785426426617af05ea2d9377384b8925f757714d9d04994f9f8fd4b4702f630b7b8efe8a7ecf2a1211b5b671570d72fced965c5931
   languageName: node
   linkType: hard
 
@@ -22256,7 +22258,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memoizee@npm:^0.4.11, memoizee@npm:^0.4.14, memoizee@npm:^0.4.17":
+"memoizee@npm:^0.4.11, memoizee@npm:^0.4.14":
   version: 0.4.17
   resolution: "memoizee@npm:0.4.17"
   dependencies:
@@ -24554,21 +24556,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pidtree@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "pidtree@npm:0.6.0"
+"pidtree@npm:^0.3.0":
+  version: 0.3.1
+  resolution: "pidtree@npm:0.3.1"
   bin:
     pidtree: bin/pidtree.js
-  checksum: 10c0/0829ec4e9209e230f74ebf4265f5ccc9ebfb488334b525cb13f86ff801dca44b362c41252cd43ae4d7653a10a5c6ab3be39d2c79064d6895e0d78dc50a5ed6e9
+  checksum: 10c0/cd69b0182f749f45ab48584e3442c48c5dc4512502c18d5b0147a33b042c41a4db4269b9ce2f7c48f11833ee5e79d81f5ebc6f7bf8372d4ea55726f60dc505a1
   languageName: node
   linkType: hard
 
-"pidusage@npm:3.0.2":
-  version: 3.0.2
-  resolution: "pidusage@npm:3.0.2"
+"pidusage@npm:2.0.16":
+  version: 2.0.16
+  resolution: "pidusage@npm:2.0.16"
   dependencies:
-    safe-buffer: "npm:^5.2.1"
-  checksum: 10c0/605722ab95e146ebaeb224285023d5c95bd383d460769cb00be774d125d654193b5de806fe9d6e6c9e4994687524f7285fc35bd5c653081c28ee6bd24d11b854
+    safe-buffer: "npm:^5.1.2"
+  checksum: 10c0/2c006d19883e5639f7b0c1a7379f1a61e26191e32542bbb1c5415cadea1befc82a8f03932a0bf9cc740016c1d317a0712fed44533d413d832c23e7352ea04f05
   languageName: node
   linkType: hard
 
@@ -27566,6 +27568,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rxjs@npm:^5.5.6":
+  version: 5.5.12
+  resolution: "rxjs@npm:5.5.12"
+  dependencies:
+    symbol-observable: "npm:1.0.1"
+  checksum: 10c0/da1a467cda40792f41d16998e4766ab27f14c077b2b333a35ff0b26251211d646f7aadd0e8255e1f7da95c038f40f1322be030424376592b28361388a3001115
+  languageName: node
+  linkType: hard
+
 "rxjs@npm:^6.1.0, rxjs@npm:^6.3.3, rxjs@npm:^6.4.0, rxjs@npm:^6.5.2, rxjs@npm:^6.6.0, rxjs@npm:^6.6.7":
   version: 6.6.7
   resolution: "rxjs@npm:6.6.7"
@@ -29114,14 +29125,15 @@ __metadata:
     deep-extend: "npm:^0.6.0"
     dom-scroll-into-view: "npm:^1.2.1"
     dotenv: "npm:^16.0.3"
-    electron: "npm:25.9.8"
+    electron: "npm:27.3.11"
     electron-better-web-request: "npm:^1.0.1"
     electron-builder: "npm:^24.13.3"
     electron-chrome-extension: "https://github.com/viktor44/electron-chrome-extension/releases/download/v6.0.3/release.tar.gz"
     electron-debug: "npm:^3.2.0"
     electron-log: "npm:^2.2.14"
     electron-mocha: "npm:^12.1.0"
-    electron-process-manager: "https://github.com/viktor44/electron-process-manager/releases/download/v1.1.0/release.tar.gz"
+    electron-process-manager: "npm:^1.0.0"
+    electron-process-reporter: "npm:1.4.0"
     electron-updater: "npm:^6.2.1"
     electron-webpack: "npm:^2.8.2"
     electron-window-state: "npm:5.0.3"
@@ -29930,6 +29942,13 @@ __metadata:
   dependencies:
     tslib: "npm:^2.0.3"
   checksum: 10c0/6a47c1926e06395ead750905e103be388aeec8c9697f20b14bc3e1e86fcb4fc78e5033197afe6cc8bbed80f0a4ee1f184b0fa22eec7f4a767bdfd278683d52eb
+  languageName: node
+  linkType: hard
+
+"symbol-observable@npm:1.0.1":
+  version: 1.0.1
+  resolution: "symbol-observable@npm:1.0.1"
+  checksum: 10c0/f6a4232c2ed3a7932018de3377de11b0fe9b1acd74ed759d79854e7177f7ed94e89493093441d942a5c7d0b7b5f58667d5ad3aea3573a8260011515745a96991
   languageName: node
   linkType: hard
 

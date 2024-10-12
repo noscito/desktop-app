@@ -1,7 +1,7 @@
 {
   "name": "station-desktop-app",
   "productName": "Station",
-  "version": "3.2.0-b2",
+  "version": "3.2.0-b3",
   "description": "Station",
   "homepage": "https://getstation.com",
   "author": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:viktor44/station-desktop-app.git"
+    "url": "git@github.com:getstation/desktop-app.git"
   },
   "contributors": [],
   "license": "Apache License 2.0",
@@ -69,7 +69,8 @@
     "electron-chrome-extension": "https://github.com/viktor44/electron-chrome-extension/releases/download/v6.0.3/release.tar.gz",
     "electron-debug": "^3.2.0",
     "electron-log": "^2.2.14",
-    "electron-process-manager": "https://github.com/viktor44/electron-process-manager/releases/download/v1.1.0/release.tar.gz",
+    "electron-process-manager": "^1.0.0",
+    "electron-process-reporter": "1.4.0",
     "electron-updater": "^6.2.1",
     "electron-window-state": "5.0.3",
     "emoji-js": "^3.4.1",
@@ -284,7 +285,7 @@
     "copy-webpack-plugin": "^4.6.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.1",
-    "electron": "25.9.8",
+    "electron": "27.3.11",
     "electron-builder": "^24.13.3",
     "electron-mocha": "^12.1.0",
     "electron-webpack": "^2.8.2",
