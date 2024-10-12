@@ -511,6 +511,7 @@ class DockImpl extends React.PureComponent {
                   badge={getApplicationBadge(application)}
                   isInstanceLogoInDockIcon={isInstanceLogoInDockIcon}
                   logoURL={logoURL}
+                  tooltip='zzzz'
                   onOverStateChange={this.onIconOverStateChange(applicationId)}
                   onClick={this.handleClickDockItem(applicationId)}
                   onRightClick={this.handleRightClickDockItem(applicationId)}

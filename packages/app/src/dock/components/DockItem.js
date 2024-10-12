@@ -12,6 +12,7 @@ class DockItem extends React.PureComponent {
     badge: PropTypes.any,
     isInstanceLogoInDockIcon: PropTypes.bool.isRequired,
     logoURL: PropTypes.string.isRequired,
+    tooltip: PropTypes.string,
     onOverStateChange: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
     onRightClick: PropTypes.func.isRequired,
@@ -35,6 +36,7 @@ class DockItem extends React.PureComponent {
       badge,
       isInstanceLogoInDockIcon,
       logoURL,
+      tooltip,
       onOverStateChange,
       onClick,
       onRightClick,
@@ -51,11 +53,12 @@ class DockItem extends React.PureComponent {
     const popperModifiers = {
       keepTogether: { enabled: false },
       preventOverflow: { enabled: true, boundariesElement: 'viewport' },
-      offset: { offset: '-15, 35' },
+      offset: { offset: '-15, 4' },
       computeStyle: { gpuAcceleration: false }
     };
 
     return (
+
       <div className="l-dock__scroll__item">
         <Manager>
           <Reference>
@@ -67,6 +70,7 @@ class DockItem extends React.PureComponent {
                   badge={badge}
                   isInstanceLogoInDockIcon={isInstanceLogoInDockIcon}
                   logoURL={logoURL}
+                  tooltip={tooltip}
                   onOverStateChange={onOverStateChange}
                   onClick={onClick}
                   onRightClick={onRightClick}

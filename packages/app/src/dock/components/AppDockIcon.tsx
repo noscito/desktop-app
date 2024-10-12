@@ -3,6 +3,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import * as classNames from 'classnames';
 import * as shortid from 'shortid';
+import { Tooltip } from '@getstation/theme';
 
 interface Classes {
   anchor: string,
@@ -21,6 +22,7 @@ export interface OwnProps {
   badge?: string | number | null,
   isInstanceLogoInDockIcon?: boolean,
   logoURL?: string,
+  tooltip?: string,
   /**
    * If passed to `true`, when the `AppDockIcon` will
    * get a little animation.
@@ -108,19 +110,21 @@ export class AppDockIcon extends React.PureComponent<Props> {
   handleMouseLeave = () => this.props.onOverStateChange!(false);
 
   renderSurroundingLink(element: JSX.Element): JSX.Element {
-    const { classes, onClick, onRightClick, iconRef } = this.props;
+    const { classes, onClick, onRightClick, iconRef, tooltip } = this.props;
     return (
-      <div ref={iconRef}>
-        <a
-          className={classes!.anchor}
-          onClick={onClick}
-          onContextMenu={onRightClick}
-          onMouseEnter={this.handleMouseEnter}
-          onMouseLeave={this.handleMouseLeave}
-        >
-          {element}
-        </a>
-      </div>
+      <Tooltip placement="right" tooltip={tooltip}>
+        <div ref={iconRef}>
+          <a
+            className={classes!.anchor}
+            onClick={onClick}
+            onContextMenu={onRightClick}
+            onMouseEnter={this.handleMouseEnter}
+            onMouseLeave={this.handleMouseLeave}
+          >
+            {element}
+          </a>
+        </div>
+      </Tooltip>
     );
   }
 

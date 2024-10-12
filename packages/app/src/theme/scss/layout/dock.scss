@@ -37,7 +37,6 @@ $app-dot-size: 18px;
 .l-dock__scroll {
   flex: 1 1 auto;
   padding-bottom: 30px;
-  padding-right: 30px;
   width: calc(100%);
   @include scrolling();
 
@@ -48,6 +47,7 @@ $app-dot-size: 18px;
 
 //== Children
 .l-dock__scroll__item {
+  display: block;
   margin-top: calc((#{$dock-size} - #{$app-size}) * 0.5);
 }
 
