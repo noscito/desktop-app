@@ -13,6 +13,7 @@
   "extended_scopes": [
     "https://*.live.com",
     "https://*.office.com",
+    "https://*.msauth.net",
     "https://*.microsoft.com"
   ],
   "bx_legacy_service_id": "microsoft-teams",
